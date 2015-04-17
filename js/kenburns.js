@@ -32,9 +32,11 @@
             fadeSpeed:500,
             scale:1,
             ease3d:'cubic-bezier(.81, 0, .26, 1)',
+            infiniteLoop: true,
             onLoadingComplete:function(){},
             onSlideComplete:function(){},
             onListComplete:function(){},
+            onSlideShowComplete:function(){},
             getSlideIndex:function(){
                 return currentSlide;
             }
@@ -73,8 +75,7 @@
         for (i in list) {
             imagesObj["image"+i] = {};
             imagesObj["image"+i].loaded = false;
-        	this.attachImage(list[i], "image"+i , i);
-        	
+            this.attachImage(list[i], "image"+i , i);
         }
 
         var loader = $('<div/>');
@@ -96,16 +97,16 @@
      * has 3d transform capabilities and initializes the starting CSS values. 
      */
     Plugin.prototype.attachImage = function(url,alt_text,index) {
-    	var that = this;
+        var that = this;
 
         //put the image in an empty div to separate the animation effects of fading and moving
         var wrapper = $('<div/>');
         wrapper.attr('class','kb-slide');
         wrapper.css({'opacity':0});
 
-		var img = $("<img />");
-		img.attr('src', url);
-		img.attr('alt', alt_text);
+        var img = $("<img />");
+        img.attr('src', url);
+        img.attr('alt', alt_text);
 
         wrapper.html(img);
 
@@ -123,15 +124,15 @@
 
         //set up the image OBJ parameters - used to track loading and initial dimensions
         img.load(function() {
-        	imagesObj["image"+index].element = this;
-        	imagesObj["image"+index].loaded  = true;
+            imagesObj["image"+index].element = this;
+            imagesObj["image"+index].loaded  = true;
             imagesObj["image"+index].width = $(this).width();
             imagesObj["image"+index].width = $(this).height();
             that.insertAt(index,wrapper);
             that.resume(index);
-		});
+        });
 
-	}
+    }
 
     /**
      * Resume
@@ -139,7 +140,6 @@
      * it also fires the complete action when the series of images finishes loading
      */
     Plugin.prototype.resume = function(index){
-
         //first image has loaded
         if(index == 0) {
             this.startTransition(0);
@@ -195,6 +195,16 @@
          $(image).parent().addClass('stalled');
     }
 
+    /**
+     * pauses the video
+     * Can be called to pause the current
+     */
+    Plugin.prototype.pause = function() {
+        clearInterval(this.interval);
+         var image = imagesObj["image"+currentSlide].element;
+         $(image).parent().stop(true,true);
+         $(image).parent().addClass('stalled');
+    }
 
 
     /* 3. Transitions and Movement
@@ -206,18 +216,25 @@
      * Also manages loading - if the interval encounters a slide
      * that has not loaded, the transition pauses. 
      */
-	Plugin.prototype.startTransition = function(start_index) {
-	    var that = this;
-	    currentSlide = start_index; //current slide
+    Plugin.prototype.startTransition = function(start_index) {
+        var that = this;
+        currentSlide = start_index; //current slide
 
         that.doTransition();
-		this.interval = setInterval(function(){
+        this.interval = setInterval(function(){
 
             //Advance the current slide
             if(currentSlide < that.maxSlides-1){
                 currentSlide++;
-            }else {
-                currentSlide = 0;
+            } else {
+                if(that.options.infiniteLoop) {
+                    currentSlide = 0;
+                } else {
+                    clearInterval(that.interval);
+                    that.pause();
+                    that.options.onSlideShowComplete();
+                    return;
+                }
             }
             
             //Check if the next slide is loaded. If not, wait.
@@ -230,8 +247,8 @@
                 that.doTransition();
             }
 
-		},this.options.duration);
-	}
+        }, this.options.duration);
+    }
 
 
     /** 
