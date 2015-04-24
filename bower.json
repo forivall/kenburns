@@ -1,0 +1,25 @@
+{
+  "name": "kenburns",
+  "version": "0.0.1",
+  "homepage": "https://github.com/hevets/kenburns",
+  "authors": [
+    "Steve Henderson <hevets@gmail.com>"
+  ],
+  "description": "kenburns effect",
+  "main": "js/kenburns.js",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "kenburns"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
