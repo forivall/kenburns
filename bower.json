@@ -6,7 +6,7 @@
     "Steve Henderson <hevets@gmail.com>"
   ],
   "description": "kenburns effect",
-  "main": "js/kenburns.js",
+  "main": "js/jquery.kenburns",
   "moduleType": [
     "amd"
   ],
