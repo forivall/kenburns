@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/forivall/kenburns/issues"
   },
-  "homepage": "https://github.com/forivall/kenburns#readme"
+  "homepage": "https://github.com/forivall/kenburns#readme",
+  "dependencies": {
+    "jquery": "^2.1.4"
+  }
 }
