@@ -1,0 +1,19 @@
+{
+  "name": "kenburns",
+  "version": "0.0.1",
+  "description": "A Jquery gallery featuring CSS3 hardware accelerated pan-and-zoom, Ken Burns style transitions.",
+  "main": "js/kenburns.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/forivall/kenburns.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/forivall/kenburns/issues"
+  },
+  "homepage": "https://github.com/forivall/kenburns#readme"
+}
